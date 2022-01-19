@@ -5,7 +5,7 @@ from flask_bootstrap import Bootstrap
 from flask_nav import Nav
 from flask_nav.elements import *
 from dominate.tags import img
-import os
+import os, waitress
 
 
 logo = img(src="https://img.icons8.com/external-soft-fill-juicy-fish/30/000000/external-convert-user-interface-design-soft-fill-soft-fill-juicy-fish.png", height="50", width="50", style="margin-top:-15px")
@@ -76,6 +76,7 @@ def home():
 
 nav.init_app(app)
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.debug = False
+    port=int(os.environ.get('PORT', 33507))
+    waitress.serve(app, port=port)
 #    app.run()
