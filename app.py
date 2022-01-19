@@ -5,6 +5,7 @@ from flask_bootstrap import Bootstrap
 from flask_nav import Nav
 from flask_nav.elements import *
 from dominate.tags import img
+import os
 
 
 
@@ -31,17 +32,38 @@ def toMp4():
     if request.method == 'POST':
         url = request.form['url']
         try:
-            downloadFolder = str(Path.home() / "Downloads")
             obj=YouTube(url)
         except Exception as error:
             return_message = "Error : " + str(error) + " Try again !"
             return render_template("to_mp4.html",return_message=return_message)
         else:
+            downloadFolder = str(Path.home() / "Downloads")
             stream = obj.streams.get_highest_resolution()
             stream.download(downloadFolder)
             return redirect(url_for('success'))
     else:
       return render_template("to_mp4.html")
+
+@app.route('/to_mp3', methods = ['GET','POST'])
+def toMp3():
+    if request.method == 'POST':
+        url = request.form['url']
+        try:
+            yt = YouTube(url)
+        except Exception as error:
+            return_message = "Error : " + str(error) + " Try again !"
+            return render_template("to_mp3.html",return_message=return_message)
+        else:
+            video = yt.streams.filter(only_audio=True).first()
+            downloadFolder = str(Path.home() / "Downloads")
+            out_file = video.download(output_path=downloadFolder)
+            base, ext = os.path.splitext(out_file)
+            new_file = base + '.mp3'
+            os.rename(out_file, new_file)
+            return redirect(url_for('success'))
+    else:
+      return render_template("to_mp3.html")
+
 
 @app.route("/success")
 def success():
