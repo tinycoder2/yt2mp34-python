@@ -8,8 +8,7 @@ from dominate.tags import img
 import os
 
 
-
-logo = img(src='./static/img/forg.png', height="50", width="50", style="margin-top:-15px")
+logo = img(src="https://img.icons8.com/external-soft-fill-juicy-fish/30/000000/external-convert-user-interface-design-soft-fill-soft-fill-juicy-fish.png", height="50", width="50", style="margin-top:-15px")
 
 topbar = Navbar(logo,
                 View('Home', 'home'),
@@ -25,7 +24,7 @@ Bootstrap(app)
 
 @app.route('/aboutMe')
 def aboutMe():
-    return redirect("https://tinycoder2.github.io/pimbuOS/")
+    return render_template("about_me.html")
 
 @app.route('/to_mp4', methods = ['GET','POST'])
 def toMp4():
@@ -34,7 +33,7 @@ def toMp4():
         try:
             obj=YouTube(url)
         except Exception as error:
-            return_message = "Error : " + str(error) + " Try again !"
+            return_message = "Error : " + str(error) + " Try again!"
             return render_template("to_mp4.html",return_message=return_message)
         else:
             downloadFolder = str(Path.home() / "Downloads")
