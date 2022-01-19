@@ -12,11 +12,12 @@
 <body>
     <div class="container">
 
+        {{msg}}
 
         <h1 style="color:blue;">hello! welcome to my site!</h1>
         <p style="color:red;">convert youtube videos to mp4 :D</p>
 
-        <form action="{{ url_for ('getInput') }}" method="POST">
+        <form action="{{ url_for ('toMp4') }}" method="POST">
             enter the url below<br>
             <p><input type="text" name="url" /></p>
             <p><input type="submit" value="submit" /></p>

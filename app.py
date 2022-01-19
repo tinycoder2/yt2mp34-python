@@ -26,38 +26,46 @@ Bootstrap(app)
 def aboutMe():
     return redirect("https://tinycoder2.github.io/pimbuOS/")
 
-def ytConv(url):
-    downloadFolder = str(Path.home() / "Downloads")
-    print(downloadFolder)
-    print(url)
-    # url="https://youtu.be/vV9gkIFxD54"
-    obj=YouTube(url)
-    stream = obj.streams.get_highest_resolution()
-    stream.download(downloadFolder)
-    print("downloaded")
+# def ytConv(url):
+#     downloadFolder = str(Path.home() / "Downloads")
+#     # print(downloadFolder)
+#     # print(url)
+#     obj=YouTube(url)
+#     stream = obj.streams.get_highest_resolution()
+#     stream.download(downloadFolder)
+#     print("downloaded")
 
 # @app.route('/form')
 # def form():
 #    return render_template("get_url.html")
 
 
-@app.route('/get_Input', methods = ['GET','POST'])
-def getInput():
+@app.route('/t0_mp4', methods = ['GET','POST'])
+def toMp4():
     if request.method == 'POST':
         url = request.form['url']
         try:
-            ytConv(url)
-            return redirect(url_for('home'))
+            # ytConv(url)
+            downloadFolder = str(Path.home() / "Downloads")
+            obj=YouTube(url)
         except Exception as error:
             return_message = str(error)
             return(return_message)
+        else:
+            stream = obj.streams.get_highest_resolution()
+            stream.download(downloadFolder)
+            return redirect(url_for('success'))
     else:
       return render_template("get_url.html")
 
+@app.route("/success")
+def success():
+    return render_template("success.html")
 
 @app.route("/")
 def home():
     return render_template("index.html")
+
 
 
 nav.init_app(app)
